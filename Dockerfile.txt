@@ -1,0 +1,77 @@
+# Build from above the src directory with :
+# docker build -f src/Web\ Apps/GOS.Website/Dockerfile .
+ARG LINUX_SWITCH
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102$LINUX_SWITCH AS build
+
+RUN apt-get -yqq update && \
+    apt-get -yqq install curl unzip && \
+    apt-get -yqq install xvfb tinywm && \
+    apt-get -yqq install fonts-ipafont-gothic xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic && \
+    apt-get -yqq install python && \
+    rm -rf /var/lib/apt/lists/*
+
+
+	    
+ # Install Google Chrome 75 stable
+ #RUN apt-get update && apt-get -y install libxss1 libappindicator1 libindicator7 libasound2 libatk-bridge2.0-0 fonts-liberation libappindicator3-1 libgtk-3-0 libnspr4 libnss3 lsb-release xdg-utils && \
+ #curl -L -o google-chrome.deb https://www.slimjet.com/chrome/download-chrome.php?file=files%2F90.0.4430.72%2Fgoogle-chrome-stable_current_amd64.deb && \
+ #dpkg -i ./google-chrome*.deb && \
+ #apt-get install -yf && \
+    # Install firefox latest
+#    apt-get -qqy --no-install-recommends install firefox-esr && \r
+#    rm -rf /var/lib/apt/lists/*
+
+# install google chrome
+ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+ RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+ RUN apt-get -y update
+ RUN apt-get install -y google-chrome-stable
+
+#Chrome browser to run the tests
+#ARG CHROME_VERSION=91.0.4472.77
+#RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add \
+     # && wget https://www.slimjet.com/chrome/download-chrome.php?file=lnx%2Fchrome64_$CHROME_VERSION.deb \
+     # && dpkg -i download-chrome*.deb || true
+#RUN apt-get install -y -f \
+     # && rm -rf /var/lib/apt/lists/*
+     
+   #  RUN apt-get update && \
+    # apt-get install -y unzip xvfb libxi6 libgconf-2-4 && \
+     #curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add && \
+     #echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
+     #apt-get -y update && \
+    # apt-get -y install google-chrome-stable && \
+     # Install firefox latest
+     #apt-get -qqy --no-install-recommends install firefox-esr && \
+    # rm -rf /var/lib/apt/lists/*    
+
+
+COPY . /.
+ RUN dotnet restore "ROS.Regression.Test.sln" 
+ RUN dotnet build "ROS.Regression.Test.sln"
+
+#$LINUX_SWITCH can be passed as '-alpine' to build with a linux base instead of the default Debian
+
+  ENTRYPOINT ["dotnet", "test",  "ROS.Regression.Test/ROS.Regression.Test.csproj", "--filter: TestCategory=Test", "--logger: trx", "--results-directory", "/testsresults", "--no-build", "--no-restore"]
+ # ENTRYPOINT ["dotnet", "test",  "ROS.Regression.Test/ROS.Regression.Test.csproj", "--filter: TestCategory=Test", "--logger: trx;LogFileName=acceptance_test_result.trx", "--results-directory", "/testsresults", "--no-build", "--no-restore"]
+# ENTRYPOINT dotnet test ${PROJECT_NAME} --filter "TestCategory=${TAG}" --logger "trx;LogFileName=acceptance_test_result.trx" --no-build --no-restore
+
+ #ARG TEST_TAG
+ #ARG BASE_URL
+ #ARG BROWSER_TYPEdocker imagesdocker
+ #ARG TEST_PROJECT_NAME
+ # DBURI
+ #ENV TAG $TEST_TAG
+ #ENV BASEURL $BASE_URL
+ # BROWSERTYPE $BROWSER_TYPE
+ #ENV PROJECT_NAME $TEST_PROJECT_NAME
+ #ENV DB_URI $DBURI
+ #ENV PROJECT_NAME $TEST_PROJECT_NAME
+ #ENV CHROMEDRIVER_PORT 4444
+ #ENV CHROMEDRIVER_WHITELISTED_IPS "127.0.0.1"
+
+ #ENV DISPLAY :20.0
+ #ENV SCREEN_GEOMETRY "1440X900X24"
+ #EXPOSE 4444
+
+#RUN dotnet test GOS.Acceptance.Test/GOS.Acceptance.Test.csproj --filter TestCategory=${TAG} --logger "trx;LogFileName=acceptance_test_result.trx"

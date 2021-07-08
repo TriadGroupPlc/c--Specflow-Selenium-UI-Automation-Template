@@ -1,0 +1,50 @@
+pipeline {
+    agent {
+        label 'docker'
+    }
+
+        parameters {
+        string(name: 'BASEURL', description: "Website base url", defaultValue: "https://gos-staging.triad.co.uk")
+        string(name: 'TAG', description: "Test suite Tag", defaultValue: "Test")
+        string(name: 'PROJECT_NAME', description: "Test project name", defaultValue: "ROS.Regression.Test/ROS.Regression.Test/ROS.Regression.Test.csproj")
+		string(name: 'BROWSERTYPE', description: "Browser type", defaultValue: "GoogleChrome")
+    }
+
+    stages {
+        stage('Check Out SCM') {
+            steps {
+                deleteDir()
+                checkout scm
+            }
+        }
+
+                stage('Build Docker') {
+            steps {
+                script {
+           sh "docker build --rm --tag 'regressiontest_${BUILD_NUMBER}' . -f ROS.Regression.Test/Dockerfile.txt --build-arg BASE_URL=${BASEURL} --build-arg BROWSER_TYPE=${BROWSERTYPE} --build-arg TEST_TAG=${TAG} --build-arg TEST_PROJECT_NAME=${PROJECT_NAME}"
+                }
+            }
+        }
+
+        stage('Run AcceptanceTest') {
+            steps {
+                script {
+                    sh "docker create --name regressiontestcontainer_${BUILD_NUMBER} regressiontest_${BUILD_NUMBER}"    
+                    sh "docker start -i regressiontestcontainer_${BUILD_NUMBER}"                
+                }
+            }
+        }doc
+    }
+
+     post {
+        always { 
+            script {                
+                sh "docker  regressiontestcontainer_${BUILD_NUMBER}:/ROS.Regression.Test/ROS.Regression.Test/TestResults ."
+      sh "docker cp regressiontestcontainer_${BUILD_NUMBER}:/ROS.Regression.Test/ROS.Regression.Test/bin ."
+                sh "docker rm -v regressiontestcontainer_${BUILD_NUMBER}"
+                sh "docker rmi regressiontest_${BUILD_NUMBER}"
+            }             
+            --name
+        }
+    }   
+}

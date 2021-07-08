@@ -1,0 +1,30 @@
+{
+  "_comment 1": "Login Page",
+  "Login page heading": "h1.govuk-heading-l",
+
+  "Email address field": "input#username",
+  "Password field": "input#password",
+  "Sign in button": "button.govuk-button",
+  "Show password button": "button#show-password",
+
+  "_comment 3": "Supplier Dashborad Page",
+  "Supplier page heading": "h1.govuk-heading-l",
+
+  "_comment 4": "Basic Information Page",
+  "Basic information page heading": "h1.govuk-heading-ln",
+  "Continue button": "button.govuk-button",
+
+  "_comment 5": "Fuel Information Page",
+  "Fuel information page heading": "h1.govuk-heading-ln",
+  "Fuel type": "input#ac-apply-fuelType",
+  "Fuel type options": "//*[contains(@id,'ac-apply-fuelType__option')]",
+  "Country of origin": "input#ac-apply-origin",
+  "Country of origin options": "//*[contains(@id,'ac-apply-origin__option')]",
+  "Feed stock": "input#ac-apply-feedStock",
+  "Feed stock options": "//*[contains(@id,'ac-apply-feedStock__option')]",
+  "Volume": "input#apply-volume",
+  "Carbon intensity": "input#apply-carbonintensity",
+
+  "_comment 6": "Fuel Information Page",
+  "Sustainability page heading": "#sustainability-info > div.govuk-form-group > fieldset > legend > h1"
+}
