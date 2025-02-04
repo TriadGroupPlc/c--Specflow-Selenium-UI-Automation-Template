@@ -13,7 +13,7 @@
     {
         #region Properties
 
-        private readonly GeneralHelpers generalHelpers = new GeneralHelpers();
+        private GeneralHelpers generalHelpers;
         private readonly ScenarioContext scenarioContext;
 
         private readonly IWebDriver instance;

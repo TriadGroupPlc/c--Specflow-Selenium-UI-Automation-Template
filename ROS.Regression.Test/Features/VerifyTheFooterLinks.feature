@@ -6,14 +6,14 @@
 
 	@RegressionTest
   Scenario Outline: Verify the links in the footer
-    Given I am on the ROS login page
+    Given I have logged in as "Administrator" user using "Company One"
 	When I click the <footerLink> link
 	Then the title of the page should be <page>
 
-	Examples: 
-	  | footerLink              | page                                                                       |
-	  | Help                    | Renewable Transport Fuel Obligation - GOV.UK                                  |
+Examples: 
+	  | footerLink              | page                                                                    |
+	  | Help                    | Renewable Transport Fuel Obligation (RTFO) scheme - GOV.UK              |
 	  | Cookies                 | Cookies - GOV.UK - Renewable Transport Fuels Obligation                 |
-	  | Contact                 | Renewable Transport Fuel Obligation - GOV.UK                                  |
+	  | Contact                 | Renewable Transport Fuel Obligation (RTFO) scheme - GOV.UK              |
 	  | Privacy policy          | Privacy policy - GOV.UK - Renewable Transport Fuels Obligation          |
-	  | Accessibility statement | Accessibility statement - GOV.UK - Renewable Transport Fuels Obligation      |
+	  | Accessibility statement | Accessibility statement - GOV.UK - Renewable Transport Fuels Obligation |

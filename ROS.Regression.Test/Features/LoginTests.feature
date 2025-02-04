@@ -1,15 +1,16 @@
 ﻿Feature: LoginTest
 	As a supplie\Verifier\Admin user can I login to ROS system
 
-@regressionTest @ignore
-Scenario: Exisitng supplier login to the ROS system
-	Given I navigate to the ROS login page
-	When I enter my username <username>
-	And I enter my password <password>
-	And I click Showpassword buton
-	And I click Login buton
-	Then I should see the "Supplier Dashboard"
+@regressionTest
+
+Scenario Outline: Exisitng admin login to the ROS system
+	Given I have logged in as "<userType>" user using "Company One"
+	Then the title of the page should be <page>
 
 	Examples: 
-|    username		| password		    |
-| ValidUsername    | ValidPassword    |
+	| userType      | page                                                                    |
+	| Administrator | Administrator dashboard - GOV.UK - Renewable Transport Fuels Obligation |
+	| supplier      | Supplier dashboard - GOV.UK - Renewable Transport Fuels Obligation      |
+	| Verifier      | Verifier dashboard - GOV.UK - Renewable Transport Fuels Obligation      |
+
+

@@ -120,10 +120,10 @@
   <data name="GOSPassword" xml:space="preserve">
     <value>P@ssw0rd</value>
   </data>
-  <data name="ValidPassword" xml:space="preserve">
-    <value>Open123!1</value>
+  <data name="userType" xml:space="preserve">
+    <value>supplier</value>
   </data>
-  <data name="ValidUsername" xml:space="preserve">
-    <value>gosadmin@triad.co.uk</value>
+  <data name="OrgName" xml:space="preserve">
+    <value>Company One</value>
   </data>
 </root>

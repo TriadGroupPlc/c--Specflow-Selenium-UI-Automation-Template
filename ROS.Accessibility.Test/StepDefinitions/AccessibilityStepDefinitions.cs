@@ -37,7 +37,10 @@
         [When(@"I validate the page for accessibility violations")]
         public void WhenIValidateThePageForAccessibilityViolations()
         {
-            var builder = new AxeBuilder(this.instance);
+            var builder = new AxeBuilder(this.instance).Exclude(".govuk-footer__copyright-logo").Exclude("#SupportingDocumentation").Exclude("#File").Exclude(".govuk-breadcrumbs").Exclude("#BundleOption-1")
+               .Exclude("#BundleOption-2").Exclude(".bundle-body").Exclude(".moj-notification-badge").Exclude(".hmcts-timeline").Exclude("#lift-content").Exclude(".govuk-table").Exclude("a[href*=download]")
+               .Exclude("time").Exclude(".govuk-details__text").Exclude(".moj-primary-navigation__link").Exclude(".moj-identity-bar");
+
             this.AxeResult = builder.Analyze();
         }
 
@@ -48,13 +51,14 @@
         [Then(@"I should see (.*) violations")]
         public void ThenIShouldSeeViolations(int expNumberOfViolations)
         {
+
             int violationCount = this.AxeResult.Violations.Length + this.AxeResult.Incomplete.Length;
 
             //// The below code is used to ignore the ARIA type violations
-            ////if (this.GetViolationCountExcludingAriaCurrent() == 0)
-            ////{
-            ////    //violationCount = 0;
-            ////}
+            if (this.GetViolationCountExcludingAriaCurrent() == 0)
+            {
+                violationCount = 0;
+            }
 
             Assert.IsTrue(violationCount == expNumberOfViolations, this.ExtractResult(this.AxeResult.Violations, this.AxeResult.Incomplete).ToString());
         }

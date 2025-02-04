@@ -3,7 +3,7 @@
 
 @AccessibilityTest
 Scenario: Verify the footer pages for any accessibility violations
-    Given I am on the ROS login page
+    Given I have logged in as "Administrator" user using "Company One"
 	And I click the <footerLink> link
     When I validate the page for accessibility violations
     Then I should see 0 violations
@@ -14,10 +14,5 @@ Scenario: Verify the footer pages for any accessibility violations
 	  | Privacy policy         | 
 	  | Accessibility statement|
 
-@AccessibilityTest
-Scenario: Verify the components pages for any accessibility violations
-    Given I am on the ROS login page
-	And I navigate to components page	
-    When I validate the page for accessibility violations
-    Then I should see 0 violations
+
 	

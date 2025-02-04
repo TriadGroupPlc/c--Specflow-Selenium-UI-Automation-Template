@@ -1,17 +1,41 @@
 ﻿namespace ROS.Test.Shared.Helpers
 {
+    using System;
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Newtonsoft.Json.Linq;
     using OpenQA.Selenium;
+    using OpenQA.Selenium.BiDi.Communication;
+    using OpenQA.Selenium.Support.UI;
     using ROS.Test.Shared.Utilities;
+    using TechTalk.SpecFlow;
 
     /// <summary>
     /// This class contains the general helper methods commonly used in all projects.
     /// </summary>
     public class GeneralHelpers
     {
+
+        #region Properties
+
+        private readonly ScenarioContext scenarioContext;
+        private readonly IWebDriver instance;
+
+
+        #endregion Properties
+
+        #region Constructor
+
+        public GeneralHelpers(ScenarioContext scenarioContext)
+        {
+            this.scenarioContext = scenarioContext;
+            this.instance = this.scenarioContext["Web_Driver"] as IWebDriver;
+        }
+
+        #endregion Constructor
+
         #region Methods
 
         /// <summary>
@@ -67,11 +91,26 @@
         /// <param name="instance">The instance of the driver to interact.</param>
         public void ClickTheLink(string elementLocator, IWebDriver instance)
         {
-            Commonlib.WaitUntilElementExists(elementLocator, instance);
-
-            instance.FindElement(By.CssSelector(elementLocator)).Click();
+            Commonlib.WaitUntilLinkTextElementExists(elementLocator, instance);
+            instance.FindElement(By.LinkText(elementLocator)).Click();
             Commonlib.WaitForPageLoad(instance);
         }
+
+        public void ClickXpathElement(string elementLink, IWebDriver instance)
+        {
+            string elementLocator = GeneralHelpers.GetLocator(elementLink);
+            if (!elementLocator.StartsWith("//"))
+            {
+                this.ClickElement(elementLink, instance);
+                return;
+            }
+
+            Commonlib.WaitUntilXpathElementExists(elementLocator, instance);
+
+            instance.FindElement(By.XPath(elementLocator)).Click();
+            Commonlib.WaitForPageLoad(instance);
+        }
+
 
         /// <summary>
         /// Identify the element using the elementCssSelector and return the text value from the element.
@@ -85,6 +124,29 @@
             Commonlib.WaitUntilElementExists(elementLocator, instance);
 
             return instance.FindElement(By.CssSelector(elementLocator)).Text;
+        }
+
+        /// <summary>
+        /// Steps to login using the supplier account.
+        ///  </summary>
+        /// <param name="userType">Admin/Supplier/Verifier.....</param>
+        /// <param name="instance">The instance of the driver to interact.</param>
+        /// <param name="company">Company One/Company Two/Company 24/etc.</param>
+        public void LoginAsaUserType(string userType, IWebDriver instance, string company)
+        {
+            this.NavigateToLoginPage(instance);
+            Thread.Sleep(4000);
+            Console.WriteLine("Navigated to url");
+            this.SelectaUserTypeInAuthenticationPage(userType, instance, company, null);
+
+            //// Below is the code to login as a Suplier when IAP is not enabled (UAT/TEST envts). Comment out the above one lines before enabling the below:
+            // instance.FindElement(By.Id("identifierId")).SendKeys("laurageoffrey9@gmail.com");
+            // instance.FindElement(By.Id("identifierNext")).Click();
+            // Commonlib.WaitForPageLoad(instance);
+            // instance.FindElement(By.Name("password")).SendKeys("Ros1234!");
+            // instance.FindElement(By.Id("passwordNext")).Click();
+            // Commonlib.WaitForPageLoad(instance);
+            // Thread.Sleep(5000);
         }
 
         /// <summary>
@@ -113,9 +175,10 @@
         public void LoginAsSupplier(IWebDriver instance)
         {
             this.NavigateToLoginPage(instance);
-            this.EnterInput("Email address field", DataUtils.GetResourceValue("ValidUsername"), instance);
-            this.EnterInput("Password field", DataUtils.GetResourceValue("ValidPassword"), instance);
-            this.ClickElement("Sign in button", instance);
+            //this.EnterInput("Email address field", DataUtils.GetResourceValue("company"), instance);
+            //this.EnterInput("Password field", DataUtils.GetResourceValue("userType"), instance);
+
+            this.SelectaUserTypeInAuthenticationPage(DataUtils.GetResourceValue("userType"), instance, DataUtils.GetResourceValue("OrgName"), null);
         }
 
         /// <summary>
@@ -135,8 +198,48 @@
         /// <param name="instance">The instance of the driver to interact.</param>
         public void NavigateToFuelInformationPage(IWebDriver instance)
         {
-            instance.FindElement(By.LinkText("Submit a single application")).Click();
-            this.ClickElement("Continue button", instance);
+            instance.FindElement(By.LinkText("Volumes")).Click();
+            instance.FindElement(By.LinkText("Report RTFO dutiable volume")).Click();
+   
+        }
+
+        /// <summary>
+        /// Steps to select a user type from the Authentication page. Do pass the userType variable same as the one in Locators.json file.
+        ///  </summary>
+        /// <param name="userType">Admin/Supplier/Verifier.....</param>
+        /// <param name="instance">The instance of the driver to interact.</param>
+        /// <param name="company">Parse the company name of you want other than COMPANY ONE.</param>
+        /// <param name="userID">1 or 2.</param>
+        public void SelectaUserTypeInAuthenticationPage(string userType, IWebDriver instance, string company, string userID)
+        {
+            instance.Navigate().GoToUrl(ConstantUtils.BaseUrl + "/account/test");
+            Commonlib.WaitForPageLoad(instance);
+
+            if (company == null || company == "null")
+            {
+                Console.WriteLine(this.scenarioContext["OrganisationFullName"]);
+                this.SelectElementFromDropdown("Organisation", this.scenarioContext["OrganisationFullName"].ToString(), instance);
+            }
+            else
+            {
+                this.SelectElementFromDropdown("Organisation", company, instance);
+                Console.WriteLine("selected org");
+            }
+
+            if (userID == null || userID == "null")
+            {
+                // Keep blank to use the default user 2 (supplier@example.com), or change to user 1 (serviceaccount@triad.co.uk) depending on what you're doing.
+            }
+            else
+            {
+                this.EnterInput("User", userID, instance);
+            }
+
+            this.ClickXpathElement(userType, instance);
+            Console.WriteLine("before clicking sign in button");
+            this.ClickElement("Sign in button", instance);
+            Console.WriteLine("clicked sign in button");
+            Commonlib.WaitForPageLoad(instance);
         }
 
         #endregion Methods

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.UI;
     using ROS.Test.Shared.Helpers;
@@ -28,8 +29,14 @@
             }
             catch (Exception e)
             {
-                Assert.Fail("Page not Loadedmessage : {0} ", e.Message);
+                ClassicAssert.AreEqual("Page not Loadedmessage : {0} ", e.Message);
             }
+        }
+
+        public static void WaitUntilXpathElementExists(string elementLocator, IWebDriver instance)
+        {
+            new WebDriverWait(instance, TimeSpan.FromSeconds(ConstantUtils.WAITFORELEMENT))
+                .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.XPath(elementLocator)));
         }
 
         /// <summary>
@@ -41,6 +48,18 @@
         {
             new WebDriverWait(instance, TimeSpan.FromSeconds(ConstantUtils.WAITFORELEMENT))
                 .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.CssSelector(elementLocator)));
+        }
+
+
+        /// <summary>
+        /// This will wait for the element to be clickable until a timeout is reached.
+        /// </summary>
+        /// <param name="elementLocator">The element loctaor to identify the element.</param>
+        /// <param name="instance">The instance of the driver to interact.</param>
+        public static void WaitUntilLinkTextElementExists(string elementLocator, IWebDriver instance)
+        {
+            new WebDriverWait(instance, TimeSpan.FromSeconds(ConstantUtils.WAITFORELEMENT))
+               .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.LinkText(elementLocator)));
         }
 
         /// <summary>

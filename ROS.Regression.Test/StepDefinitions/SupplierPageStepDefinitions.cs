@@ -1,6 +1,7 @@
 ﻿namespace ROS.Regression.Test.StepDefinitions
 {
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
     using OpenQA.Selenium;
     using ROS.Test.Shared.Helpers;
     using TechTalk.SpecFlow;
@@ -13,7 +14,7 @@
     {
         #region Properties
 
-        private readonly GeneralHelpers generalHelpers = new GeneralHelpers();
+        private GeneralHelpers generalHelpers;
         private readonly ScenarioContext scenarioContext;
 
         private readonly IWebDriver instance;
@@ -35,7 +36,7 @@
         [Then(@"I should see the ""(.*)""")]
         public void ThenIShouldSeeThe(string pagetitle)
         {
-            Assert.AreEqual(
+            ClassicAssert.AreEqual(
                 pagetitle,
                 this.generalHelpers.GetTextFromElement("Supplier page heading", this.instance),
                 "The page title '{0}' is incorrect",

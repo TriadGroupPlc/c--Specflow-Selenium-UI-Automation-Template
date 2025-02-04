@@ -65,7 +65,7 @@
                             EnsureCleanSession = true,
                             EnablePersistentHover = false,
                         };
-                        ieoptions.AddAdditionalCapability("disable-popup-blocking", true);
+                       // ieoptions.AddAdditionalCapability("disable-popup-blocking", true);
                         ieoptions.PageLoadStrategy = PageLoadStrategy.Eager;
                         ieoptions.IgnoreZoomLevel = true;
                         this.Instance = new InternetExplorerDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ieoptions);

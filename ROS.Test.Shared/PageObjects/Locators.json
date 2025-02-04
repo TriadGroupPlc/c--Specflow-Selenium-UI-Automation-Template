@@ -26,5 +26,14 @@
   "Carbon intensity": "input#apply-carbonintensity",
 
   "_comment 6": "Fuel Information Page",
-  "Sustainability page heading": "#sustainability-info > div.govuk-form-group > fieldset > legend > h1"
+  "Sustainability page heading": "#sustainability-info > div.govuk-form-group > fieldset > legend > h1",
+
+  "_comment 7": "Test Authentication Page",
+  "Organisation": "input#ac-OrganisationId",
+  "Organisation options": "//*[contains(@id,'ac-OrganisationId__option')]",
+  "User": "input#UserId",
+  "Administrator": "//input[@data-checkbox-value = 'RtfoTeamMember']",
+  "supplier": "//input[@data-checkbox-value = 'Supplier']",
+  "Verifier": "//input[@data-checkbox-value = 'Verification']",
+  "Trader": "//input[@data-checkbox-value = 'Trading']"
 }

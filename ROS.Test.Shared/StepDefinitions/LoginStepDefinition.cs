@@ -13,7 +13,7 @@
     {
         #region Properties
 
-        private readonly GeneralHelpers generalHelpers = new GeneralHelpers();
+        private GeneralHelpers generalHelpers;
 
         private readonly ScenarioContext scenarioContext;
 
@@ -51,36 +51,49 @@
         [When(@"I enter my username (.*)")]
         public void WhenIEnterMyUsername(string username)
         {
+            this.generalHelpers = new GeneralHelpers(this.scenarioContext);
             this.generalHelpers.EnterInput("Email address field", DataUtils.GetResourceValue(username), this.instance);
         }
 
         [When(@"I enter my password (.*)")]
         public void WhenIEnterMyPassword(string password)
         {
+            this.generalHelpers = new GeneralHelpers(this.scenarioContext);
             this.generalHelpers.EnterInput("Password field", DataUtils.GetResourceValue(password), this.instance);
         }
 
         [When(@"I click Login buton")]
         public void WhenIClickLoginButon()
         {
+            this.generalHelpers = new GeneralHelpers(this.scenarioContext);
             this.generalHelpers.ClickElement("Sign in button", this.instance);
         }
 
         [When(@"I click Showpassword buton")]
         public void WhenIClickShowpasswordButon()
         {
+            this.generalHelpers = new GeneralHelpers(this.scenarioContext);
             this.generalHelpers.ClickElement("Show password button", this.instance);
         }
 
         [Given(@"I have logged in as a supplier")]
         public void GivenIHaveLoggedInAsASupplier()
         {
+            this.generalHelpers = new GeneralHelpers(this.scenarioContext);
             this.generalHelpers.LoginAsSupplier(this.instance);
+        }
+
+        [Given(@"I have logged in as ""(.*)"" user using ""(.*)""")]
+        public void GivenIHaveLoggedInAsaUserType(string userType, string companyName)
+        {
+            this.generalHelpers = new GeneralHelpers(this.scenarioContext);
+            this.generalHelpers.LoginAsaUserType(userType, this.instance, companyName);
         }
 
         [Given(@"navigate to Fuel Information page")]
         public void GivenNavigateToFuelInformationPage()
         {
+            this.generalHelpers = new GeneralHelpers(this.scenarioContext);
             this.generalHelpers.NavigateToFuelInformationPage(this.instance);
         }
 

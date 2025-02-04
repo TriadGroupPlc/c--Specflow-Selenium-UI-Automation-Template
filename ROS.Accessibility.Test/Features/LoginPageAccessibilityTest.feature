@@ -6,7 +6,7 @@
 
 	 @AccessibilityTest
   Scenario: Check Accessibility violations in Login page
-	Given I navigate to the GOS login page
+	  Given I have logged in as "Administrator" user using "Company One"
 	When I validate the page for accessibility violations
     Then I should see 0 violations 
 

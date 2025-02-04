@@ -22,7 +22,7 @@
 
         #region Properties
 
-        private readonly GeneralHelpers generalHelpers = new GeneralHelpers();
+        private GeneralHelpers generalHelpers;
 
         private readonly ScenarioContext scenarioContext;
         private readonly IWebDriver instance;
@@ -60,6 +60,7 @@
         [When(@"I click the (.*) link")]
         public void GivenIClickTheLink(string link)
         {
+            this.generalHelpers = new GeneralHelpers(this.scenarioContext);
             this.generalHelpers.ClickTheLink(link, this.instance);
         }
 

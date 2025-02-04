@@ -71,7 +71,7 @@
 
                     var screenshotfilename = screenshotDirectory + "\\" + runname + ".png";
 
-                    ss.SaveAsFile(screenshotfilename, ScreenshotImageFormat.Png);
+                    ss.SaveAsFile(screenshotfilename);
                 }
             }
             catch (Exception e)

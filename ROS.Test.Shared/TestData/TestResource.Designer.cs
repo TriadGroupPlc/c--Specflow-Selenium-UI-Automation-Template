@@ -19,7 +19,7 @@ namespace ROS.Test.Shared.TestData {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class TestResource {
@@ -70,20 +70,20 @@ namespace ROS.Test.Shared.TestData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open123!1.
+        ///   Looks up a localized string similar to Company One.
         /// </summary>
-        internal static string ValidPassword {
+        internal static string OrgName {
             get {
-                return ResourceManager.GetString("ValidPassword", resourceCulture);
+                return ResourceManager.GetString("OrgName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to gosadmin@triad.co.uk.
+        ///   Looks up a localized string similar to supplier.
         /// </summary>
-        internal static string ValidUsername {
+        internal static string userType {
             get {
-                return ResourceManager.GetString("ValidUsername", resourceCulture);
+                return ResourceManager.GetString("userType", resourceCulture);
             }
         }
     }

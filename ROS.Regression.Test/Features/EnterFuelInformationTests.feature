@@ -1,7 +1,7 @@
 ﻿Feature: EnterFuelInformationTests
-	As a Supplier can I enter the fule information
+	As a Supplier can I enter the fuel information
 
-@regressionTest @ignore
+@regressionTest 
 Scenario: Can I enter the fuel information details and click submit
 	Given I have logged in as a supplier
 	And navigate to Fuel Information page
